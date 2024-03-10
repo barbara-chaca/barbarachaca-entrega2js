@@ -1,0 +1,107 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{font-family: 'Ubuntu', sans-serif;
+} 
+
+
+/*Header*/
+header{
+    background-color: #a09d9d;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    .logo{
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .nav-link{
+        text-decoration: none;
+        color: #000000;
+    }
+}
+
+
+/* Main */
+main{  
+    padding-bottom: 3%;
+    background-color: #d3b6b6;    
+}
+
+.banner{  
+    background-image: url(../imgs/backgroundimgindex.png);    
+    padding: 12% 0%;
+    background-size: cover;
+    background-position: center;    
+
+}
+
+
+h1 {
+    font-size: 5rem;
+    font-style: bold;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    text-shadow: -5px -3px 4px rgba(34, 34, 34, 0.925);
+}
+
+h2{
+    font-size: 3rem;
+    font-style: bold;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    text-shadow: -5px -3px 4px rgba(34, 34, 34, 0.925);
+}
+
+.card-body {
+    background-color: #f3dcdc;
+}
+
+
+
+
+
+/*Footer*/
+footer{
+    background-color: #a09d9d;
+    color: rgb(0, 0, 0);
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.contenidoFooter {
+    display: flex;  
+    flex-direction: row;
+    align-self: flex-end;
+}
+
+.contenidoFooter img {
+    width: 20px; 
+    height: 20px;
+}
+
+.instagram {
+    display: flex;
+    flex-direction: row;
+
+    .pig {
+        padding-left: 2%;
+    }
+}
+
+
+.map {
+    grid-area: map;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+
