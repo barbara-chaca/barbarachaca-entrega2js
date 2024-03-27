@@ -105,3 +105,12 @@ footer{
 }
 
 
+.products-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    justify-content: center;
+    align-items: start;
+    padding: 10px;
+}
+
