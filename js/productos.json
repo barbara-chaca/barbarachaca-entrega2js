@@ -1,0 +1,65 @@
+[
+    {
+      "id": 1,
+      "nombre": "Alfajor de chocolate",
+      "precio": 1200,
+      "image": "./imgs/choconegro.png",
+      "description": "Dos galletitas rellenas con dulce de leche y cubiertas con chocolate semiamargo."
+    },
+    {
+      "id": 2,
+      "nombre": "Alfajor de chocolate blanco",
+      "precio": 1200,
+      "image": "./imgs/chocoblanco.png",
+      "description": "Alfajor cubierto de chocolate blanco relleno de dulce de leche."
+    },
+    {
+      "id": 3,
+      "nombre": "Alfajor de fruta",
+      "precio": 1200,
+      "image": "./imgs/fruta.png",
+      "description": "Dos galletitas rellenas con mermelada de membrillo, cubiertas con una capa de merengue."
+    },
+    {
+      "id": 4,
+      "nombre": "Alfajor de nuez",
+      "precio": 1200,
+      "image": "./imgs/nuez.png",
+      "description": "Dos galletitas rellenas con mermelada de membrillo, cubiertas con una capa de merengue."
+    },
+    {
+      "id": 5,
+      "nombre": "Alfajor de maicena",
+      "precio": 1200,
+      "image": "./imgs/maicena.png",
+      "description": "Las más suaves galletitas de maicena rellenas con una generosa porción de  dulce de leche y una lluvia de coco rayado para coronar."
+    },
+    {
+      "id": 6,
+      "nombre": "Alfajor de mousse",
+      "precio": 1200,
+      "image": "./imgs/mousse.png",
+      "description": "Dos galletitas rellenas de un suave y delicioso mousse de chocolate, bañadas en chocolate con leche."
+    },
+    {
+      "id": 7,
+      "nombre": "Conito de chocolate",
+      "precio": 1000,
+      "image": "./imgs/cononegro.png",
+      "description": "Delicado bocadito de dulce de leche, cubierto con el más suave chocolate semiamargo."
+    },
+    {
+      "id": 8,
+      "nombre": "Conito de chocolate blanco",
+      "precio": 1000,
+      "image": "./imgs/conoblanco.png",
+      "description": "Delicado bocadito de dulce de leche, cubierto con el más suave chocolate blanco."
+    },
+    {
+      "id": 9,
+      "nombre": "Conito de cacao",
+      "precio": 1000,
+      "image": "./imgs/conocacao.png",
+      "description": "Delicado bocadito de dulce de leche, cubiertos con doble capa de chocolate 70% cacao puro."
+    }
+]

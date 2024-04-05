@@ -1,160 +1,254 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const carrito = [];
+let productos = [];
+let carrito = [];
 
-  const productos = [
-    {
-      id: 1,
-      nombre: "Alfajor de chocolate",
-      precio: 1200,
-      image: "../imgs/choconegro.png",
-      description:
-        "Dos galletitas rellenas con dulce de leche y cubiertas con chocolate semiamargo.",
-    },
-    {
-      id: 2,
-      nombre: "Alfajor de chocolate blanco",
-      precio: 1200,
-      image: "../imgs/chocoblanco.png",
-      description:
-        "Alfajor cubierto de chocolate blanco relleno de dulce de leche.",
-    },
-    {
-      id: 3,
-      nombre: "Alfajor de fruta",
-      precio: 1200,
-      image: "../imgs/fruta.png",
-      description:
-        "Dos galletitas rellenas con mermelada de membrillo, cubiertas con una capa de merengue.",
-    },
-    {
-      id: 4,
-      nombre: "Alfajor de nuez",
-      precio: 1200,
-      image: "../imgs/nuez.png",
-      description:
-        "Dos galletitas rellenas con mermelada de membrillo, cubiertas con una capa de merengue.",
-    },
-    {
-      id: 5,
-      nombre: "Alfajor de maicena",
-      precio: 1200,
-      image: "../imgs/maicena.png",
-      description:
-        "Las más suaves galletitas de maicena rellenas con una generosa porción de  dulce de leche y una lluvia de coco rayado para coronar.",
-    },
-    {
-      id: 6,
-      nombre: "Alfajor de mousse",
-      precio: 1200,
-      image: "../imgs/mousse.png",
-      description:
-        "Dos galletitas rellenas de un suave y delicioso mousse de chocolate, bañadas en chocolate con leche.",
-    },
-    {
-      id: 7,
-      nombre: "Conito de chocolate",
-      precio: 1000,
-      image: "../imgs/cononegro.png",
-      description:
-        "Delicado bocadito de dulce de leche, cubierto con el más suave chocolate semiamargo.",
-    },
-    {
-      id: 8,
-      nombre: "Conito de chocolate blanco",
-      precio: 1000,
-      image: "../imgs/conoblanco.png",
-      description:
-        "Delicado bocadito de dulce de leche, cubierto con el más suave chocolate blanco.",
-    },
-    {
-      id: 9,
-      nombre: "Conito de cacao",
-      precio: 1000,
-      image: "../imgs/conocacao.png",
-      description:
-        "Delicado bocadito de dulce de leche, cubiertos con doble capa de chocolate 70% cacao puro.",
-    },
-  ];
-  const productsSection = document.getElementById("productosSection");
-
-  productos.forEach((producto) => {
-    const cardElement = document.createElement("div");
-    cardElement.innerHTML = `
-                <div class="cardIndex card" style="width: 100%;">
-                    <img src=${producto.image} class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h3 class="card-title">${producto.nombre}</h3>
-                        <p class="cardIndexText card-text">${producto?.description}</p>
-                        <p>Precio por unidad: $ ${producto.precio}</p>
-                        <button type="button" class="btn btn-primary">Agregar al carrito</button>
-                        <button class="btn btn-danger eliminar-producto" data-id="1">Eliminar</button>
-                    </div>
-                </div>
-    `;
-
-    productsSection.appendChild(cardElement);
+// Obtener los productos del archivo JSON y cargarlos en la página
+fetch(newFunction())
+  .then(response => response.json())
+  .then(data => {
+    productos = data;
+    cargarProductos(productos);
   });
 
-  // Cargar carrito desde el almacenamiento local si está disponible
-  if (localStorage.carrito) {
-    const carritoGuardado = JSON.parse(localStorage.carrito);
-    carrito.push(...carritoGuardado);
+function newFunction() {
+  return "./js/productos.json";
+}
+
+function cargarProductos(listaProductos) {
+  const productosSection = document.getElementById('productosSection');
+  if (productosSection && listaProductos.length > 0) {
+    listaProductos.forEach(producto => {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <div class="cardIndex card" style="width: 100%;">
+          <img src=${producto.image} class="card-img-top" alt="...">
+          <div class="card-body">
+            <h3 class="card-title">${producto.nombre}</h3>
+            <p class="cardIndexText card-text">${producto.description}</p>
+            <p>Precio por unidad: $ ${producto.precio}</p>
+            <button type="button" id="${producto.id}" class="agregar-carrito btn btn-primary">Agregar al carrito</button>
+            <button class="btn btn-danger eliminar-producto" data-id="1"  onclick="eliminarProducto(event, ${producto.id})">Eliminar</button>
+          </div>
+        </div>
+      `;
+      productosSection.appendChild(div);
+
+      // Escuchar eventos de clic en botones de agregar al carrito
+      const botonAgregarCarrito = div.querySelector(".agregar-carrito");
+      botonAgregarCarrito.addEventListener("click", agregarAlCarrito);
+    });
+  }
+}
+
+// Cargar carrito desde el almacenamiento local si está disponible
+if (localStorage.carrito) {
+  carrito= JSON.parse(localStorage.carrito);
+
+  //actualiza el storage
+  actualizarProductosCarrito();
+  actualizarNumeroCarrito()
+  calcularTotal();
+
+
+}
+
+
+function agregarAlCarrito(e) {
+  const idBoton = e.currentTarget.id;
+
+  const productoAgregado = productos.find(producto => producto.id === parseInt(idBoton));
+
+
+  if (productoAgregado) {
+   const productoEnCarrito= carrito.find(c => c.id === productoAgregado.id)
+
+   if(productoEnCarrito){
+    carrito.forEach(c =>{
+      if( productoEnCarrito.id === c.id){
+       c.cantidad++ 
+      }
+    })
+   }else{
+    productoAgregado.cantidad = 1
+    carrito.push(productoAgregado)
+   }
+
+
+    //actualiza storage
+    actualizarProductosCarrito();
+    calcularTotal();
+  } else {
+    console.error('Producto no encontrado');
+  }
+  actualizarNumeroCarrito();
+}
+
+function actualizarNumeroCarrito() {
+
+  const numeroCarrito = document.getElementById("numero-carrito");
+  if (numeroCarrito) {
+    let cantidad =  carrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+
+    numeroCarrito.innerText =cantidad;
+    localStorage.setItem("cantidad-productos", numeroCarrito.innerText);
+  }
+}
+
+function actualizarProductosCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function calcularTotal() {
+  const container = document.querySelector('.carrito-menu');
+  const importeElemento = document.createElement('div');
+  importeElemento.classList.add('.importe')
+
+  let importeTotal = 0;
+  carrito.forEach((producto) => {
+    importeTotal += producto.precio * producto.cantidad;
+  });
+
+
+
+  if (importeElemento && container) {
+    const checkIfExist = document.querySelector('.importe-total');
+    console.log(checkIfExist)
+    if(checkIfExist){
+      const total= document.querySelector('.total')
+      total.textContent=`$${importeTotal}`
+    }else{
+
+      importeElemento.innerHTML=`
+      <div>
+        <div class='importe-total'>
+          <span>Total: </span>
+          <span class="total">$${importeTotal}</span>
+        </div>
+        <button class='comprar-btn' onclick="finalizarComprar()">Comprar</button>
+      </div>
+    `
+      container.appendChild(importeElemento);
+    }
+  }
+}
+
+const botonesEliminar = document.querySelectorAll(".eliminar-producto");
+botonesEliminar.forEach((boton) => {
+  boton.addEventListener("click", () => {
+    const idProducto = parseInt(boton.dataset.id);
+    eliminarDelCarrito(idProducto);
+  });
+});
+
+function eliminarDelCarrito(idProducto) {
+  const index = carrito.findIndex((producto) => producto.id === idProducto);
+  if (index !== -1) {
+    carrito.splice(index, 1);
     actualizarProductosCarrito();
     calcularTotal();
   }
+}
 
-  // Escuchar eventos de clic en botones de agregar al carrito
-  const botonAgregarCarrito = document.querySelectorAll(".btn.btn-primary");
+const botonCarrito= document.querySelector('.carrito-container')
+botonCarrito.addEventListener('click', (event)=>{
+  event.stopPropagation();
 
-  botonAgregarCarrito.forEach((boton, index) => {
-    boton.addEventListener("click", () => {
-      agregarAlCarrito(index);
-      calcularTotal();
-    });
-  });
+  const checkDiv=document.querySelector('.carrito-menu')
+  if(carrito.length > 0 && !checkDiv){
+    const div = document.createElement('div');
 
-  // Agregar un producto al carrito
-  function agregarAlCarrito(index) {
-    const producto = productos[index];
-    carrito.push(producto);
-    console.log("Producto agregado al carrito:", producto);
-    actualizarProductosCarrito();
-  }
+    div.classList.add('carrito-menu')
 
-  // Actualizar la cantidad de productos en el carrito y guardar en el almacenamiento local
-  function actualizarProductosCarrito() {
-    const unidadesProductos = document.querySelector(".productos");
-    unidadesProductos.textContent = carrito.length;
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    console.log("Carrito actualizado:", carrito);
-  }
 
-  // Calcular el importe total del carrito y actualizar el precio mostrado
-  function calcularTotal() {
-    let importeTotal = 0;
-    carrito.forEach((producto) => {
-      importeTotal += producto.precio;
-    });
-    const importeElemento = document.querySelector(".importe");
-    importeElemento.textContent = `$${importeTotal}`;
-  }
+    carrito.forEach(producto =>{
+      div.innerHTML += `
 
-  // Event listener para botones de "eliminar"
-  const botonesEliminar = document.querySelectorAll(".eliminar-producto");
-  botonesEliminar.forEach((boton) => {
-    boton.addEventListener("click", () => {
-      const idProducto = parseInt(boton.dataset.id);
-      eliminarDelCarrito(idProducto);
-      calcularTotal();
-    });
-  });
-
-  // Función para eliminar un producto del carrito
-  function eliminarDelCarrito(idProducto) {
-    const index = carrito.findIndex((producto) => producto.id === idProducto);
-    if (index !== -1) {
-      carrito.splice(index, 1);
-      actualizarProductosCarrito();
+      <div class='carrito-menu-row' id='producto-${producto.id}'>
+        <img src=${producto.image} class="carrito-menu-img"/>
+        <span>${producto.nombre}</span>
+        <span>$1200</span>
+        <div class="carrito-contador-container">
+          <button class="contador-restar" id=${`restar-${producto.id}`} onclick="modificarCantidadProducto(${producto.id}, 'restar')">-</button>
+          <span id='cantidad-${producto.id}'>${producto.cantidad}</span>
+          <button class="contador-sumar" id=${`sumar-${producto.id}`} onclick="modificarCantidadProducto(${producto.id}, 'sumar')">+</button>
+        </div>
+        <div class='borrar-producto-container' onclick="eliminarProducto(event, ${producto.id})">
+          <img src="./imgs/deleteIcon.png" class='borrar-producto-icon'>
+        </div>
+      </div>
+    `;
+    })
+    botonCarrito.appendChild(div)
+    calcularTotal()
+    document.addEventListener('click', cerrarCarrito);
+  }else if (checkDiv){ 
+    if (!checkDiv.contains(event.target)) {
+      checkDiv.remove();
     }
   }
-});
+})
+function cerrarCarrito(event) {
+  const checkDiv = document.querySelector('.carrito-menu');
+
+  if (checkDiv && event.target !== botonCarrito && !checkDiv.contains(event.target)) {
+    checkDiv.remove(); // Remove the cart from the DOM
+    document.removeEventListener('click', cerrarCarrito); // Remove the event listener
+  }
+}
+
+function modificarCantidadProducto(productId, operacion) {
+
+  const productIndex = carrito.findIndex(producto => producto.id === productId);
+
+  if (productIndex !== -1) {
+    if(operacion === 'sumar'){
+      carrito[productIndex].cantidad+= 1;
+    }else{
+      carrito[productIndex].cantidad -= 1;
+    }
+    const cantidadElement = document.querySelector(`#cantidad-${productId}`);
+    if (cantidadElement) {
+      actualizarProductosCarrito();
+      actualizarNumeroCarrito()
+      calcularTotal()
+      
+      
+      cantidadElement.textContent =  carrito[productIndex].cantidad;
+    }
+  }
+
+}
+function eliminarProducto(event, productId) {
+  event.stopPropagation()
+  // Find the index of the product with the given productId in the carrito array
+  const productIndex = carrito.findIndex(producto => producto.id === productId);
+
+  // Check if the product exists in the carrito array
+  if (productIndex !== -1) {
+    // Remove the product from the carrito array
+    carrito.splice(productIndex, 1);
+    actualizarProductosCarrito();
+    actualizarNumeroCarrito()
+    calcularTotal()
+    // Update the display to reflect the removal of the product
+    const productElement = document.querySelector(`#producto-${productId}`);
+    if (productElement) {
+      productElement.remove();
+    }
+  }
+}
+
+function finalizarComprar(){
+  carrito = []
+  const total= document.querySelector('.numero-carrito')
+  total.textContent="0"
+
+  const s=document.querySelector('.carrito-menu')
+  s.remove()
+  actualizarProductosCarrito()
+  calcularTotal()
+  Swal.fire({
+    text: 'Compra Finalizada',
+    icon: 'success',
+    confirmButtonText: 'Ok'
+  })
+}

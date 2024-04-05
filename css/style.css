@@ -13,6 +13,9 @@ header{
     background-color: #a09d9d;
     font-size: 1.2rem;
     font-weight: bold;
+    position:fixed;
+    z-index: 100;
+    width: 100%;
 
     .logo{
         border-radius: 50%;
@@ -36,7 +39,7 @@ main{
 
 .banner{  
     background-image: url(../imgs/backgroundimgindex.png);    
-    padding: 12% 0%;
+    padding: 20% 0%;
     background-size: cover;
     background-position: center;    
 
@@ -114,3 +117,101 @@ footer{
     padding: 10px;
 }
 
+/* carrito */
+.carrito-img{
+    width: 40px;
+    height: 40px;
+}
+
+.carrito-container{
+    border-radius: 50%;
+    background-color: #f3dcdc;
+    padding: 10px;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+}
+.numero-carrito{
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    right: 20px;
+    top: 5px;
+
+}
+/* carrito menu */
+.carrito-menu{
+    background-color: azure;
+    position: absolute;
+    top: 40px;
+    right: 50px;
+    border-radius: 8px;
+    padding: 8px;
+     box-shadow: -11px -3px 28px -8px rgba(0,0,0,0.58);
+}
+.carrito-menu span{
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.carrito-menu-img{
+    width: 40px;
+    height: 40px;
+}
+
+.carrito-contador-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60px;
+    border-radius: 8px;
+    border: #a09d9d 1px solid;
+    padding: 4px;
+
+}
+
+.carrito-contador-container button{
+    background-color: transparent;
+    border-color: transparent;
+    color: blue;
+    font-size: 20px;
+}
+
+.carrito-menu-row{
+    display: grid;
+    grid-template-columns: 60px 90px 70px 70px 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.borrar-producto-icon{
+    width: 20px;
+    height: 20px;
+    color: red;
+}
+.borrar-producto-container{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+.borrar-producto-container:hover{
+    background-color: #e6e1e1;
+    border-radius: 20px;
+}
+.importe-total{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    
+}
+.comprar-btn{
+    display: inline-block;
+    width: 100%;
+    background-color: red;
+    border: transparent;
+    border-radius: 10px;
+    text-align: center;
+    padding: 4px;
+    
+}
